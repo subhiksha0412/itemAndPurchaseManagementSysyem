@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { getData } from "../services/api";
+import Loading from "../components/Loading";
 
 function Dashboard() {
     const [counts, setCounts] = useState({
@@ -50,6 +51,8 @@ function Dashboard() {
             <h2>Dashboard</h2>
 
             <div className="dashboard-grid">
+
+                <Loading />
                 {cards.map((card) => (
                     <div className="dashboard-card" key={card.title}>
                         <p>{card.title}</p>
