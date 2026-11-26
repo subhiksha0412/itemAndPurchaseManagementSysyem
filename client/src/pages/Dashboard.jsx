@@ -11,6 +11,8 @@ function Dashboard() {
         stock: 0
     });
 
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const loadDashboard = async () => {
             try {
@@ -27,17 +29,24 @@ function Dashboard() {
                     types: (types.data || []).length,
                     purchases: (purchases.data || []).length,
                     stock: itemList.reduce(
-                        (total, item) => total + Number(item.stock_available || 0),
+                        (total, item) =>
+                            total + Number(item.stock_available || 0),
                         0
                     )
                 });
             } catch (error) {
                 console.error("Dashboard error:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         loadDashboard();
     }, []);
+
+    if (loading) {
+        return <Loading />;
+    }
 
     const cards = [
         { title: "Total Items", value: counts.items },
@@ -51,8 +60,6 @@ function Dashboard() {
             <h2>Dashboard</h2>
 
             <div className="dashboard-grid">
-
-                <Loading />
                 {cards.map((card) => (
                     <div className="dashboard-card" key={card.title}>
                         <p>{card.title}</p>
@@ -63,7 +70,9 @@ function Dashboard() {
 
             <div className="welcome-card">
                 <h3>Welcome to Item & Purchase Management System</h3>
-                <p>Manage your item types, items, purchases and stock in one place.</p>
+                <p>
+                    Manage your item types, items, purchases and stock in one place.
+                </p>
             </div>
         </>
     );
