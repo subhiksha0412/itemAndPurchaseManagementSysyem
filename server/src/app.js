@@ -1,6 +1,7 @@
 
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const db = require("./config/db");
 
 const itemTypeRoutes = require("./routes/itemTypeRoutes");
@@ -23,6 +24,8 @@ app.get("/api/health", async (req, res) => {
             message: "Backend and Database Connected Successfully"
         });
     } catch (error) {
+        console.error("Database error:", error.message);
+
         res.status(500).json({
             success: false,
             message: "Database Connection Failed"
@@ -35,8 +38,15 @@ app.use("/api/itemTypeRoutes", itemTypeRoutes);
 app.use("/api/itemRoutes", itemRoutes);
 app.use("/api/purchaseRoutes", purchaseRoutes);
 
-app.get("/", (req, res) => {
-    res.send("Item and Purchase Management System");
+// React frontend build path
+const frontendPath = path.join(__dirname, "../../client/dist");
+
+// Serve frontend static files
+app.use(express.static(frontendPath));
+
+// React Router fallback
+app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 module.exports = app;
