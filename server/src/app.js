@@ -23,14 +23,15 @@ app.get("/api/health", async (req, res) => {
             success: true,
             message: "Backend and Database Connected Successfully"
         });
-    } catch (error) {
-        console.error("Database error:", error.message);
-
+    }  catch (error) {
+        console.error("DATABASE CONNECTION ERROR:", error);
+    
         res.status(500).json({
             success: false,
             message: "Database Connection Failed"
         });
     }
+    
 });
 
 // API routes
