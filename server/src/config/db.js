@@ -6,7 +6,17 @@ require("dotenv").config({
     path: path.resolve(__dirname, "../../.env")
 });
 
-const db = mysql.createPool({
+
+console.log("DB CONFIG CHECK:", {
+    host: process.env.DB_HOST ? "Present" : "Missing",
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER ? "Present" : "Missing",
+    password: process.env.DB_PASSWORD ? "Present" : "Missing",
+    database: process.env.DB_NAME
+});
+const db = mysql.createPool(
+    
+    {
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 4000,
     user: process.env.DB_USER,
